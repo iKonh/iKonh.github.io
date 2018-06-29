@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        初识GO--iota的用法与枚举 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> 佛系coder，随心，随性 </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>iKon</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>HOME</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>TAGS</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>ARCHIVES</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>ABOUT</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>SEARCH</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">search</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> 佛系coder，随心，随性 </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        初识GO--iota的用法与枚举
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">Post：<span>2018-06-29 11:22:44</span></span>
+        
+        <span class="attr">Tags：/
+        
+        <a class="tag" href="/tags/#Go" title="Go">Go</a>
+        <span>/</span>
+        
+        
+        </span>
+        <span class="attr">Visit：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <p>其实这篇文章的内容都是我在看常量相关的介绍时总结的，只总结这些是因为其他的比较好理解，而这两点需要实际的代码操作才能理解的原因。</p>
+<p>##iota<br>当我们在做一个系统对接时，难免会遇到定义方法返回码的时候。我们需要定义 成功的返回码是多少，失败原因1的返回码是多少，失败原因2的返回码是多少。如果返回码多了，很有可能遇到返回码冲突的情况，造成上游系统的判断bug。<br></p>
+<p>而在Go中，这个问题就很好解决了，我们可以借助iota来搞定。<br></p>
+<p>iota:Go提供的一个系统常量，数值类型，第一次使用默认为0，每使用一次默认+1。<br></p>
+<p>有了iota，我们就可以用下列方式来定义返回码：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	SUCCESS = <span class="literal">iota</span></span><br><span class="line">	FAILED_QUERY</span><br><span class="line">	FAILED_INSERT</span><br><span class="line">	FAILED_UPDATE</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(SUCCESS, FAILED_QUERY, FAILED_INSERT, FAILED_UPDATE)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 1 2 3</span><br></pre></td></tr></table></figure></p>
+<p>关于iota还有几点需要注意下：</p>
+<p>1.iota只能用于常量的声明，如果用于变量则会报错</p>
+<p>2.iota只有用于同一常量块中，才会有自动+1的操作，否则每次使用都会自动初始化为0<br><br>例：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	SUCCESS = <span class="literal">iota</span></span><br><span class="line">	FAILED_QUERY</span><br><span class="line">	FAILED_INSERT</span><br><span class="line">	FAILED_UPDATE</span><br><span class="line">)</span><br><span class="line"><span class="keyword">const</span> a = <span class="literal">iota</span></span><br><span class="line"><span class="keyword">const</span> b = <span class="literal">iota</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(SUCCESS, FAILED_QUERY, FAILED_INSERT, FAILED_UPDATE, a, b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：0 1 2 3 0 0</p>
+<p>3.同一常量块中，即使接下来的常量是其他类型的值，也不妨碍iota的计算<br><br>例:</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	SUCCESS = <span class="literal">iota</span></span><br><span class="line">	FAILED = <span class="string">"123"</span></span><br><span class="line">	FAILED_QUERY =<span class="literal">iota</span></span><br><span class="line">	FAILED_INSERT</span><br><span class="line">	FAILED_UPDATE</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(SUCCESS, FAILED_QUERY, FAILED_INSERT, FAILED_UPDATE)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：0 2 3 4</p>
+<p>##枚举<br>Go中本身是没有枚举的，需要自定义。定义枚举的时候，就非常需要结合iota<br>如下，定义一个星期的枚举：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> WEEK <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	MON WEEK = <span class="literal">iota</span> + <span class="number">1</span></span><br><span class="line">	TUE</span><br><span class="line">	WEN</span><br><span class="line">	THE</span><br><span class="line">	FRI</span><br><span class="line">	SAT</span><br><span class="line">	SUN</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a = SUN</span><br><span class="line">	fmt.Println(reflect.TypeOf(a), a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：main.WEEK 7</p>
+<p>由于枚举并不是Go本身的语法，而是自己定义的，所以并不是很严格，例如：</p>
+<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	MON WEEK = <span class="literal">iota</span> + <span class="number">1</span></span><br><span class="line">	TUE</span><br><span class="line">	WEN</span><br><span class="line">	THE</span><br><span class="line">	FRI</span><br><span class="line">	SAT</span><br><span class="line">	SUN</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a = SUN <span class="comment">// 此处给a定义为WEEK类型</span></span><br><span class="line">	a = <span class="number">15</span> <span class="comment">// 此处重新给a赋值15</span></span><br><span class="line">	fmt.Println(reflect.TypeOf(a), a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：main.WEEK 15<br><br>可见a变量其实还是WEEK类型,因为WEEK类型并不是一个独立类型，而是针对int类型的一个别名，具体可以看一下type的用法，这里不再说明。</p>
+
+        
+        <div id="comment-container">
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+</html>
